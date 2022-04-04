@@ -1,7 +1,8 @@
-
-
-
-
+#Performs all analyses for the project. Conventions we adopt:
+#1) Make the R working directory be "code" before running this or any of the work package scripts listed below;
+#2) All work packages start by clearing the workspace and setting the seed;
+#3) All work packages end by saving their output in results.
+#These conventions should minimize dependencies between packages.
 
 #Import and clean the data and save in results as data.RData
 source("CleanDat.R")
@@ -19,4 +20,4 @@ source("CleanDat.R")
 
 
 #Work package 4: (Dan/Nat, also Lei later) Parallel analysis to Lei's ms
-
+source("LeiAnalysis.R")
