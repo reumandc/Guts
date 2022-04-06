@@ -9,5 +9,14 @@
 #
 Scomip<-function(dat)
 {
+  #error checking
+  if (any(is.na(dat)))
+  {
+    stop("Error in Scomip: NAs present")
+  }
   
+  #calculations
+  xtot<-apply(FUN=sum,X=dat,MARGIN=1)
+  vari<-apply(FUN=var,X=dat,MARGIN=2)
+  return(mean(xtot)/(sqrt(sum(vari))))
 }
