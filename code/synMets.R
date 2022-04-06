@@ -12,7 +12,7 @@ synMets <- function(V, m){
   v_s <- diag(V)
   
   #community variance 
-  v_c <- sum(cov)
+  v_c <- sum(V)
   
   #mean community abundance squared
   m_c_sq <- sum(m)^2
