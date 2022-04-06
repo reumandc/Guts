@@ -6,6 +6,8 @@
 #list elements are data.frames for each individual
 #columns are microbe genera, rows are samples
 
+rm(list=ls())
+
 ##location to save results
 res_loc <- "../results/"
 if (dir.exists(res_loc)==FALSE){
@@ -43,7 +45,7 @@ names(datList) <- c(1:11, 13, 15:17, 12, 18:21)
 
 
 ##save
-save(datList, file=paste(res_loc, "dataList.RData"))
+saveRDS(datList, file=paste0(res_loc, "dataList.Rds"))
 
 
 
