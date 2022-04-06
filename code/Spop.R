@@ -9,5 +9,14 @@
 #
 Spop<-function(dat)
 {
+  #error checking
+  if (any(is.na(dat)))
+  {
+    stop("Error in Spop: NAs present")
+  }
   
+  #calculations
+  xtot<-apply(FUN=sum,X=dat,MARGIN=1)
+  sigi<-apply(FUN=sd,X=dat,MARGIN=2)
+  return(mean(xtot)/(sum(sigi)))
 }
