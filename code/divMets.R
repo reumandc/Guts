@@ -1,15 +1,18 @@
 #Computes diversity metrics: richness, Shannon diversity, and eveness based on mean abundances
 #
 #ARGS
-#m    vector of mean abundances
+#m0    vector of mean abundances; may contain zeros
 #
 #OUT
 #named vector of richness, Shannon diversity (H), and evenness
 #
-divMets <- function(m){
+divMets <- function(m0){
+  
+  #present community; remove zeros
+  m <- m0[m0>0]
   
   #numbner of species dectected
-  richness <- length(m[m>0])
+  richness <- length(m)
   
   #ln of species richness
   ln_r <- log(richness)
