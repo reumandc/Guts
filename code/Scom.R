@@ -9,5 +9,12 @@
 #
 Scom<-function(dat)
 {
+  #error checking
+  if (any(is.na(dat)))
+  {
+    stop("Error in Scom: NAs present")
+  }
   
+  xtot<-apply(FUN=sum,X=dat,MARGIN=1)
+  return(mean(xtot)/sd(xtot))
 }
