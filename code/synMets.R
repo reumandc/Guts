@@ -30,7 +30,7 @@ synMets <- function(V, m){
   Vsyn <- sum(sqrt(v_s))^2/m_c_sq 
   
   #phiV_LdM
-  phiV_LdM <- Vsyn/Vcom #also v_c/sum(sqrt(v_s))^2
+  phiV_LdM <- Vcom/Vsyn #also v_c/sum(sqrt(v_s))^2
   
   return(c(Vcom=Vcom, Vind=Vind, phiV=phiV, Vsyn=Vsyn, phiV_LdM=phiV_LdM))
 }
