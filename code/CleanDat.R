@@ -58,6 +58,24 @@ names(datList)<-ind_ID
 #***DAN: Jasmin, pls check this change and if it looks OK delete this comment 
 #and the commented line
 
+#***DAN: Jasmin, please check the below addition, which just makes sure
+#that whenever there is an NA for one genus, you get an NA for all of them,
+#and delete this comment if this addition looks OK.
+#check that, for a given subject, whenever the microbial genus entries 
+#are either all of no NAs
+for (subject in 1:length(datList))
+{
+  h<-datList[[subject]]
+  for (day in 1:(dim(h)[1]))
+  {
+    hday<-as.numeric(h[day,])
+    if (any(is.na(hday)) & !all(is.na(hday)))
+    {
+      stop("Error in data cleaning: see checkpoint 1 in code")
+    }
+  }
+}
+
 ##save
 saveRDS(datList, file=paste0(res_loc, "dataList.Rds"))
 
