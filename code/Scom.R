@@ -15,6 +15,7 @@ Scom<-function(dat)
     stop("Error in Scom: NAs present")
   }
   
+  #calculations
   xtot<-apply(FUN=sum,X=dat,MARGIN=1)
   return(mean(xtot)/sd(xtot))
 }
