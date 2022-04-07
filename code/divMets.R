@@ -29,7 +29,7 @@ divMets <- function(m0){
   #evenness = H/ln(richness)
   evn <- H/ln_r
   
-  return(c(rich=richness, H=H, evn=evn))
+  return(c(richness=richness, H=H, evenness=evn))
 }
 
 
