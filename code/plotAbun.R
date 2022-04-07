@@ -10,7 +10,7 @@
 #total      T/F; plot a line for total community abundance over time? 
 #           default F
 #synMets    dataframe of synchrony/stability metrics
-plotAbun <- function(datList, na=TRUE, total=FALSE, synMets){
+plotAbun <- function(datList, synMets, na=TRUE, total=FALSE){
   if (total==TRUE){
     dat <- lapply(datList, function(X){cbind(X,rowSums(X))})
   } else {dat <- datList}
@@ -25,11 +25,11 @@ plotAbun <- function(datList, na=TRUE, total=FALSE, synMets){
       gut <- gut[!is.na(rowSums(gut)),]
     }
     
-    plot(NULL, ylim=c(0,ymax), xlim=c(1,nrow(gut)), yaxt='n')
+    plot(NULL, ylim=c(0,ymax), xlim=c(1,nrow(gut)), yaxt='n', ylab='', xlab='')
     
-    if (subj==1){axis(side=2, at=c(0, ymas*.8), labels=TRUE)}
+    if (subj==1){axis(side=2, at=c(0, ymax*.8), labels=TRUE)}
     
-    title(main=paste('subject', names(dat[subj])), line=-1, font.main=1, adj=0.01)
+    title(main=paste('subject', names(dat[subj])), line=-1, font.main=1, adj=0.02)
     
     for (bug in 1:ncol(gut)){
       lines(gut[,bug], col=blue, lwd=0.8)
@@ -40,16 +40,16 @@ plotAbun <- function(datList, na=TRUE, total=FALSE, synMets){
     }
     mets <- round(synMets,2)
     mtext(paste('Vcom', mets$Vcom[subj], 
-                'Vind', mets$Vind[subj],
-                'Vsyn', mets$Vsyn[subj],
-                'phiV', mets$phiV[subj],
-                'phiV_LdM', mets$phiV_LdM[subj]),
-                side=3, cex=0.5, line=-4, at=nrow(gut), adj=1)
+                '\nVind', mets$Vind[subj],
+                '\nVsyn', mets$Vsyn[subj],
+                '\nphiV', mets$phiV[subj],
+                '\nphiV_LdM', mets$phiV_LdM[subj]),
+                side=3, cex=0.5, line=-4, at=nrow(gut), adj=0.9)
   }
   xlab <- "days"
   if (na==FALSE){xlab <- paste(xlab, "(NA's removed)")}
   title(xlab=xlab, outer=T, line=1.2, cex.lab=1.5)
-  title(ylab='microbe abundance', outer=T, line=-.2, cex.lab=1.5)
+  title(ylab='microbe abundance (cells/gram)', outer=T, line=-.2, cex.lab=1.5)
   title(main="microbiome taxa abundance over time", outer=T, line=-0.7,
         font.main=1, cex.main=1.5)
 }
