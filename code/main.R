@@ -7,6 +7,9 @@
 #Import and clean the data and save in results as data.RData
 source("CleanDat.R")
 
+#Getting to know the data: Plotting community and species-level abundance and metadata histograms
+source("AbundanceFigs.R"); source("metaHistograms.R")
+
 
 #Work package 1 (Jasmin/Adeola): Plotting Vcom, Vsym, phiLdM, etc versus diversity, and related work
 
