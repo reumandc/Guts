@@ -13,7 +13,7 @@ if (dir.exists(fig_loc)==F){
 
 ##number of days vs samples
 days <- sapply(dat, nrow)
-dat_noNA <- dat[nr]
+samples <- sapply(dat, function(X){nrow(X[!is.na(rowSums(X)),])})
 
 
 
