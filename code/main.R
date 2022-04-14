@@ -4,7 +4,7 @@
 #3) All work packages end by saving their output in results.
 #These conventions should minimize dependencies between packages.
 
-#Import and clean the data and save in results as data.RData
+#Import and clean the data and save in results as dataList.Rds
 source("CleanDat.R")
 
 #Getting to know the data: Plotting community and species-level abundance and metadata histograms
