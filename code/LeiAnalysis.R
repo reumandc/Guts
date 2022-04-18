@@ -125,7 +125,26 @@ dev.off()
 ShannonInvSimpson1Cor<-cor(leires$shannon1,1/leires$simpson1)
 saveRDS(ShannonInvSimpson1Cor,paste0(resloc,"CorShannonInvSimpson1.Rds"))
 
-#The upshot of the above is basically that it should not matter much what index you use
+
+pdf(file=paste0(resloc,"RichnessVsShannon2.pdf"))
+plot(leires$richness2,leires$shannon2,type="p",xlab="richness 2",ylab="shannon 2")
+dev.off()
+RichnessShannon2Cor<-cor(leires$richness2,leires$shannon2)
+saveRDS(RichnessShannon2Cor,paste0(resloc,"CorRichnessShannon2.Rds"))
+
+pdf(file=paste0(resloc,"RichnessVsInvSimpson2.pdf"))
+plot(leires$richness2,1/leires$simpson2,type="p",xlab="richness 2",ylab="1/(simpson 2)")
+dev.off()
+RichnessInvSimpson2Cor<-cor(leires$richness2,1/leires$simpson2)
+saveRDS(RichnessInvSimpson2Cor,paste0(resloc,"CorRichnessInvSimpson2.Rds"))
+
+pdf(file=paste0(resloc,"ShannonVsInvSimpson2.pdf"))
+plot(leires$shannon2,1/leires$simpson2,type="p",xlab="shannon 2",ylab="1/(simpson 2)")
+dev.off()
+ShannonInvSimpson2Cor<-cor(leires$shannon2,1/leires$simpson2)
+saveRDS(ShannonInvSimpson2Cor,paste0(resloc,"CorShannonInvSimpson2.Rds"))
+
+#The upshot of the above is basically that it should not matter too much what index you use
 
 #***now make plots to compare our results to those of Lei
 
