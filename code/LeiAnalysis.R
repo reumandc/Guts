@@ -9,7 +9,7 @@ set.seed(101)
 datloc<-"../results/dataList.Rds"
 
 #where to put the results
-resloc<-"../results/Leiresults"
+resloc<-"../results/Leiresults/"
 if (!dir.exists(resloc))
 {
   dir.create(resloc)
@@ -29,7 +29,7 @@ source("varrat.R")
 
 #***now calculate all the quantities of Lei for each subject
 
-leires<-data.frame(subject=1:length(dat),Scom=NA,Spop=NA,Scomip=NA,SAE=NA,CPE=NA,varrat=NA,PhiVert=NA)
+leires<-data.frame(subject=1:length(dat),Scom=NA,Spop=NA,Scomip=NA,SAE=NA,CPE=NA,varrat=NA,PhiVert=NA,richness1=NA,days=NA)
 for (subject in 1:length(dat))
 {
   sdat<-dat[[subject]]
@@ -53,7 +53,12 @@ for (subject in 1:length(dat))
   leires[subject,"CPE"]<-CPE(sdat)
   leires[subject,"varrat"]<-varrat(sdat)
   leires[subject,"PhiVert"]<-PhiVert(sdat)
+  leires[subject,"richness1"]<-dim(sdat)[2] #total number of taxa ever seen
+  leires[subject,"richness2"]<-mean(apply(FUN=function(x){sum(x>0)},MARGIN=1,X=sdat)) #average across time of numbers detected in each sample
+  leires[subject,"days"]<-dim(sdat)[1]
 }
+
+saveRDS(leires,file=paste0(resloc,"NumericResults.Rds"))
 
 #***check a few identities
 
@@ -73,6 +78,14 @@ if (any(abs(leires$CPE-1/sqrt(leires$varrat))>1e-12))
 {
   stop("Error in LeiAnalysis: checkpoint 5")
 }
+
+#***make a few comparisons between measures of diversity
+
+plot(leires$richness1,leires$richness2,type="p")
+RichnessCor<-cor(leires$richness1,leires$richness2) #
+saveRDS(RichnessCor,paste0(resloc,"CorrelationBetweenTwoMeasuresOfRichness.Rds"))
+
+
 
 #***now make plots to compare our results to those of Lei
 
