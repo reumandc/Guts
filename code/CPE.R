@@ -9,5 +9,14 @@
 #
 CPE<-function(dat)
 {
+  #error checking
+  if (any(is.na(dat)))
+  {
+    stop("Error in CPE: NAs present")
+  }
   
+  #calculations
+  xtot<-apply(FUN=sum,X=dat,MARGIN=1)
+  vari<-apply(FUN=var,X=dat,MARGIN=2)
+  return((sqrt(sum(vari)))/(sd(xtot)))
 }
