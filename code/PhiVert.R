@@ -10,5 +10,14 @@
 #
 PhiVert<-function(dat)
 {
+  #error checking
+  if (any(is.na(dat)))
+  {
+    stop("Error in PhiVert: NAs present")
+  }
   
+  #calculations
+  xtot<-apply(FUN=sum,X=dat,MARGIN=1)
+  sigi<-apply(FUN=sd,X=dat,MARGIN=2)
+  return(sum(sigi)/sd(xtot))
 }

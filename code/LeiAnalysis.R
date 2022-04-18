@@ -18,6 +18,15 @@ if (!dir.exists(resloc))
 #load the data - see top of CleanDat.R for description
 dat<-readRDS(file=datloc)
 
+#source the functions you'll need
+source("PhiVert.R")
+source("CPE.R")
+source("SAE.R")
+source("Scom.R")
+source("Scomip.R")
+source("Spop.R")
+source("varrat.R")
+
 #***now calculate all the quantities of Lei for each subject
 leires<-data.frame(subject=1:length(dat),Scom=NA,Spop=NA,Scomip=NA)
 for (subject in 1:length(dat))

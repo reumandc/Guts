@@ -9,5 +9,13 @@
 #
 SAE<-function(dat)
 {
+  #error checking
+  if (any(is.na(dat)))
+  {
+    stop("Error in SAE: NAs present")
+  }
   
+  #calculations
+  sigi<-apply(FUN=sd,X=dat,MARGIN=2)
+  return(sum(sigi)/(sqrt(sum(sigi^2))))
 }
