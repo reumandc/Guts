@@ -7,11 +7,11 @@
 #Import and clean the data and save in results as dataList.Rds: (Jasmin)
 source("CleanDat.R")
 
-#Getting to know the data: Plotting community and species-level abundance and metadata histograms (Jasmin)
-source("AbundanceFigs.R"); source("metaHistograms.R")
-
 #Work package 1 (Jasmin/Adeola): Plotting Vcom, Vsym, phiLdM, etc versus diversity, and related work
 source("DivStab.R"); source("phiLdMfig.R"); source("DSRfig.R")
+
+#Getting to know the data: Plotting community and species-level abundance and metadata histograms (Jasmin)
+source("AbundanceFigs.R"); source("metaHistograms.R")
 
 #Work package 2 (Adeola/Vadim) Taylor's law
 
