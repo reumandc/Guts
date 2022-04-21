@@ -334,3 +334,11 @@ MakeLeiPlots(leires,divmeasure="shannon1",plotloc=paste0(resloc,"VsShannon1.pdf"
 MakeLeiPlots(leires,divmeasure="shannon1",plotloc=paste0(resloc,"VsShannon2.pdf"))
 MakeLeiPlots(leires,divmeasure="simpson1",plotloc=paste0(resloc,"VsSimpson1.pdf"))
 MakeLeiPlots(leires,divmeasure="simpson2",plotloc=paste0(resloc,"VsSimpson2.pdf"))
+
+#***Some additional plots to support some math thinking Reuman did on 2022 04 21
+
+pdf(file=paste0(resloc,"VRvsDiversity.pdf"))
+plot(leires$shannon1,leires$varrat,type="p",xlab="shannon 1",ylab="variance ratio")
+dev.off()
+h<-cor.test(leires$shannon1,leires$varrat) #highly significant
+saveRDS(h,paste0(resloc,"CorellationTestShannon1VsClassicVR.Rds"))
