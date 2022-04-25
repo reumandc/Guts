@@ -1,2 +1,4 @@
 
 results/dataList.Rds
+*.pdf
+*.Rds
