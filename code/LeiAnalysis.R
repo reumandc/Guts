@@ -66,6 +66,8 @@ for (subject in 1:length(dat))
   leires[subject,"simpson2"]<-mean(apply(FUN=simpson,MARGIN=1,X=sdat)) #compute simpson for each time step and then average across time
   leires[subject,"days"]<-dim(sdat)[1]
 }
+leires$invsimpson1<-1/leires$simpson1
+leires$invsimpson2<-1/leires$simpson2
 
 saveRDS(leires,file=paste0(resloc,"NumericResults.Rds"))
 
@@ -334,6 +336,8 @@ MakeLeiPlots(leires,divmeasure="shannon1",plotloc=paste0(resloc,"VsShannon1.pdf"
 MakeLeiPlots(leires,divmeasure="shannon1",plotloc=paste0(resloc,"VsShannon2.pdf"))
 MakeLeiPlots(leires,divmeasure="simpson1",plotloc=paste0(resloc,"VsSimpson1.pdf"))
 MakeLeiPlots(leires,divmeasure="simpson2",plotloc=paste0(resloc,"VsSimpson2.pdf"))
+MakeLeiPlots(leires,divmeasure="invsimpson1",plotloc=paste0(resloc,"VsInvSimpson1.pdf"))
+MakeLeiPlots(leires,divmeasure="invsimpson2",plotloc=paste0(resloc,"VsInvSimpson2.pdf"))
 
 #***Some additional plots to support some math thinking Reuman did on 2022 04 21
 
