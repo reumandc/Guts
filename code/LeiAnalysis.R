@@ -50,6 +50,9 @@ for (subject in 1:length(dat))
   #remove genera which were never present
   sdat<-sdat[,-which(apply(FUN=max,X=sdat,MARGIN=2)==0)]
   
+  #save the stripped down data back in dat, for use below in the clustering section
+  dat[[subject]]<-sdat
+  
   #now fill in the values
   leires[subject,"Scom"]<-Scom(sdat)
   leires[subject,"Spop"]<-Spop(sdat)
@@ -346,3 +349,94 @@ plot(leires$shannon1,leires$varrat,type="p",xlab="shannon 1",ylab="variance rati
 dev.off()
 h<-cor.test(leires$shannon1,leires$varrat) #highly significant
 saveRDS(h,paste0(resloc,"CorellationTestShannon1VsClassicVR.Rds"))
+
+#***Now do some clustering to investigate possible causes of CPE going down as diversity goes up.
+#You have to have the clvr package installed, ask Dan. Trial with the first subject.
+
+sdat<-dat[[20]]
+
+#make the data for this subject into the format expected by the clvr package
+sdat<-t(as.matrix(sdat))
+
+#do some clustering - get raw results
+clustres<-clustvr(dat=sdat,matopt="vrclassic")
+names(clustres)
+length(clustres$clusres)
+lcr<-length(clustres$clusres)
+clustres$clusres[[lcr]]
+sum(clustres$clusres[[lcr]]$Clust==1)
+sum(clustres$clusres[[lcr]]$Clust==2)
+sum(clustres$clusres[[lcr]]$Clust==3)
+sum(clustres$clusres[[lcr]]$StrMem[clustres$clusres[[lcr]]$Clust==1])
+sum(clustres$clusres[[lcr]]$StrMem[clustres$clusres[[lcr]]$Clust==2])
+sum(clustres$clusres[[lcr]]$StrMem[clustres$clusres[[lcr]]$Clust==3])
+clustres$modres
+sum(clustres$clusres[[3]]$StrMem)
+summary(clustres)
+print(clustres)
+
+#apply getmat
+getmatres<-getmat(clustvr_obj=clustres,core_thresh=NA,scaleroot=3,plotopt="yes")
+names(getmatres)
+getmatres$node_reorder
+getmatres$conf_info
+
+getmatres$mat_agg_pos
+getmatres$mat_agg_neg
+getmatres$mat_agg_vrcf
+
+getmatres$mat_core_pos
+getmatres$mat_core_neg
+getmatres$mat_core_vrcf
+
+#try getimp
+gires<-getimp(clustres)
+class(gires)
+head(gires)
+
+#now try cor, briefly
+clustres<-clustvr(dat=sdat,matopt="cor")
+getmatres<-getmat(clustvr_obj=clustres,core_thresh=NA,scaleroot=1,plotopt="yes")
+#Looks like cluster 4 and the non-core species in cluster 5 might be negatively correlated 
+#with other species, but otherwise I see a lot of synchrony. I wonder if those species
+#are the also the ones that are not very variable?
+
+#To help answer a version of that question, how about just looking at the correlation
+#matrix and also the matrix consisting of geometric means of species variances and seeing
+#how they might be related to ach other?
+cm<-cor(t(sdat))
+vars<-apply(FUN=var,X=sdat,MARGIN=1)
+varmat<-sqrt(vars %o% vars)
+cm<-cm-diag(diag(cm))
+varmat<-varmat-diag(diag(varmat))
+plot(varmat,cm,type="p")
+plot(log10(varmat),cm,type="p")
+cor.test(as.vector(varmat),as.vector(cm),method="spearman")
+cor.test(as.vector(varmat),as.vector(cm),method="pearson")
+#You'd have to do matrix regression to get meaningful p-values, but
+#certainly looks like there is a strong tendency for the pairs of 
+#species exhibiting negative correlations with each other to only
+#be the ones with stupidly small geomtric means of variances. So it 
+#appears there is no real compensatory dynamics.
+
+#***Now try to get some summary stats for all subjects
+
+allcf<-c()
+for (counter in 1:20)
+{
+  sdat<-dat[[counter]]
+  sdat<-t(as.matrix(sdat))
+  
+  cr<-clustvr(dat=sdat,matopt="vrclassic")
+  gmr<-getmat(clustvr_obj=cr,core_thresh=NA,scaleroot=1,plotopt="no")
+  allcf<-c(allcf,gmr$conf_inf[4])
+}
+#Looks like everyone but the 9th ad the 20th subjects are showing overwhelming synchrony
+#
+#When you use some of code from the previous *** section on the 9th subject, you see much
+#more noticeable compensatory dynamics, and you see much more negative correlation for 
+#pairs of species which are jointly substantially variable. That subject actually has the lowest
+#phi_LdM of all the subjects, but has high Vsyn so has comparable Vcom with everyone else.
+#
+#The 20th subject is really less like 9 and more like the others, though maybe a bit less so.
+
