@@ -22,6 +22,9 @@ source("Shann.R")
 source("Simp.R")
 source("Rich.R")
 
+source("ShannNet.R")
+source("SimpNet.R")
+source("RichNet.R")
 
 TaxVec <- vector(mode = "character")
 for(i in 1:length(dat)){
@@ -30,8 +33,8 @@ for(i in 1:length(dat)){
 }
 
 TaxList <- vector(mode = "list", length = length(TaxVec))
-TaxMat <- matrix(data = NA, nrow = 1, ncol = 5)
-colnames(TaxMat) <- c("mAb", "Shann", "Simp", "Rich", "Days")
+TaxMat <- matrix(data = NA, nrow = 1, ncol = 8)
+colnames(TaxMat) <- c("mAb", "Shann", "Simp", "Rich", "NetShann", "NetSimp", "NetRich", "Days")
 for(i in 1:length(TaxList)){
   TaxList[[i]] <- TaxMat
 }
@@ -45,13 +48,16 @@ for(i in 1:length(dat)){
   IncVec <- apply(FUN = sum, X = dSub, MARGIN = 2)
   dSub <- dSub[,which(IncVec != 0)]
   
-  # Calculating each value of interest and 
+  # Calculating each value of interest  
   ShannSub <- Shann(dSub)
   SimpSub <- Simp(dSub)
   RichSub <- Rich(dSub)
+  NetShannSub <- ShannNet(dSub)
+  NetSimpSub <- SimpNet(dSub)
+  NetRichSub <- RichNet(dSub)
   DaysSub <- dim(dSub)[1]
   for(j in colnames(dSub)){
-    AppVec <- c(mean(dSub[,j]), ShannSub, SimpSub, RichSub, DaysSub)
+    AppVec <- c(mean(dSub[,j]), ShannSub, SimpSub, RichSub, NetShannSub, NetSimpSub, NetRichSub, DaysSub)
     TaxList[[j]] <- rbind(TaxList[[j]], AppVec)
   }
 }
@@ -61,7 +67,8 @@ for(i in 1:length(TaxList)){
   TaxList[[i]] <- TaxList[[i]][-1,]
 }
 
-TaxFrame <- data.frame(Taxa = names(TaxList), n = NA, ShannCorr = NA, ShannSig = NA, SimpCorr = NA, SimpSig = NA, RichCorr = NA, RichSig = NA)
+TaxFrame <- data.frame(Taxa = names(TaxList), n = NA, ShannCorr = NA, ShannSig = NA, SimpCorr = NA, SimpSig = NA, RichCorr = NA, RichSig = NA,
+                       NetShannCorr = NA, NetShannSig = NA, NetSimpCorr = NA, NetSimpSig = NA, NetRichCorr = NA, NetRichSig = NA)
 
 m <- "spearman"
 for(i in 1:length(TaxList)){
@@ -80,8 +87,23 @@ for(i in 1:length(TaxList)){
   R <- cor.test(x = TaxList[[i]][,"mAb"], y = TaxList[[i]][,"Rich"], method = m, exact = F)
   TaxFrame[i, "RichCorr"] <- R[["estimate"]]
   TaxFrame[i, "RichSig"] <- R[["p.value"]]
+  
+  NetSh <- cor.test(x = TaxList[[i]][,"mAb"], y = TaxList[[i]][,"NetShann"], method = m, exact = F)
+  TaxFrame[i, "NetShannCorr"] <- NetSh[["estimate"]]
+  TaxFrame[i, "NetShannSig"] <- NetSh[["p.value"]]
+  
+  NetSi <- cor.test(x = TaxList[[i]][,"mAb"], y = TaxList[[i]][,"NetSimp"], method = m, exact = F)
+  TaxFrame[i, "NetSimpCorr"] <- NetSi[["estimate"]]
+  TaxFrame[i, "NetSimpSig"] <- NetSi[["p.value"]]
+  
+  NetR <- cor.test(x = TaxList[[i]][,"mAb"], y = TaxList[[i]][,"NetRich"], method = m, exact = F)
+  TaxFrame[i, "NetRichCorr"] <- NetR[["estimate"]]
+  TaxFrame[i, "NetRichSig"] <- NetR[["p.value"]]
   } else {
     TaxFrame[i,"n"] <- 1
   }
   
 }
+TaxFrame<-na.omit(TaxFrame)
+
+

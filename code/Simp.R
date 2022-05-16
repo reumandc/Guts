@@ -14,9 +14,9 @@ Simp <- function(mat){
   for(i in 1:length(SimptVec)){
     AbTot <- sum(mat[i,])
     for(j in 1:length(SimpsVec)){
-      SimpsVec[j] <- (mat[i,j]*(mat[i,j] - 1))
+      SimpsVec[j] <- (mat[i,j]^2)
     }
-    SimptVec[i] <- sum(SimpsVec) / (AbTot*(AbTot - 1))
+    SimptVec[i] <- sum(SimpsVec) / (AbTot^2)
   }
   SimpOut <- mean(1 - SimptVec)
   
