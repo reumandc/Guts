@@ -4,6 +4,9 @@
 #3) All work packages end by saving their output in results.
 #These conventions should minimize dependencies between packages.
 
+#Run tests
+testthat::test_dir(".")
+
 #Import and clean the data and save in results as dataList.Rds: (Jasmin)
 source("CleanDat.R")
 
