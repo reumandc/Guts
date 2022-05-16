@@ -113,23 +113,29 @@ for(i in 1:length(TaxFrame[,1])){
   TaxKey <- which(names(TaxList) == ToI)
   # Shannon
   plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"Shann"], xlab = "tAvgd Shannon", ylab = "Mean abundance", main = ToI)
+  abline(lm(TaxList[[TaxKey]][,"mAb"] ~ TaxList[[TaxKey]][,"Shann"]), "Blue")
   mtext(paste0("p = ", round(TaxFrame$ShannSig[i],digits = 3)), 3, col = "Red", line = -1.5)
   # Net Shannon
   plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"NetShann"], xlab = "Net Shannon", ylab = "Mean abundance", main = ToI)
+  abline(lm(TaxList[[TaxKey]][,"mAb"] ~ TaxList[[TaxKey]][,"NetShann"]), "Blue")
   mtext(paste0("p = ", round(TaxFrame$NetShannSig[i],digits = 3)), 3, col = "Red", line = -1.5)
   
   # Simpson
   plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"Simp"], xlab = "tAvgd Simpson", ylab = "Mean abundance", main = ToI)
+  abline(lm(TaxList[[TaxKey]][,"mAb"] ~ TaxList[[TaxKey]][,"Simp"]), "Blue")
   mtext(paste0("p = ", round(TaxFrame$SimpSig[i],digits = 3)), 3, col = "Red", line = -1.5)
   # Net Simpson
   plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"NetSimp"], xlab = "Net Simpson", ylab = "Mean abundance", main = ToI)
+  abline(lm(TaxList[[TaxKey]][,"mAb"] ~ TaxList[[TaxKey]][,"NetSimp"]), "Blue")
   mtext(paste0("p = ", round(TaxFrame$NetSimpSig[i],digits = 3)), 3, col = "Red", line = -1.5)
   
   # Richness
   plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"Rich"], xlab = "tAvgd Richness", ylab = "Mean abundance", main = ToI)
+  abline(lm(TaxList[[TaxKey]][,"mAb"] ~ TaxList[[TaxKey]][,"Rich"]), "Blue")
   mtext(paste0("p = ", round(TaxFrame$RichSig[i],digits = 3)), 3, col = "Red", line = -1.5)
   # Net Richness
   plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"NetRich"], xlab = "Net Richness", ylab = "Mean abundance", main = ToI)
+  abline(lm(TaxList[[TaxKey]][,"mAb"] ~ TaxList[[TaxKey]][,"NetRich"]), "Blue")
   mtext(paste0("p = ", round(TaxFrame$NetRichSig[i],digits = 3)), 3, col = "Red", line = -1.5)
 }
 dev.off()
