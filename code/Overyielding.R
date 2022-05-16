@@ -9,7 +9,7 @@ set.seed(20164)
 datloc<-"../results/dataList.Rds"
 
 #where to put the results
-resloc<-"../results/Leiresults/"
+resloc<-"../results/OveryieldingResults/"
 if (!dir.exists(resloc)){
   dir.create(resloc)
 }
@@ -74,6 +74,7 @@ m <- "spearman"
 for(i in 1:length(TaxList)){
   Check <- dim(TaxList[[i]])[1]
   if(length(Check > 0)){
+    if(Check > 10){
   TaxFrame[i,"n"] <- Check
   
   Sh <- cor.test(x = TaxList[[i]][,"mAb"], y = TaxList[[i]][,"Shann"], method = m, exact = F)
@@ -99,11 +100,37 @@ for(i in 1:length(TaxList)){
   NetR <- cor.test(x = TaxList[[i]][,"mAb"], y = TaxList[[i]][,"NetRich"], method = m, exact = F)
   TaxFrame[i, "NetRichCorr"] <- NetR[["estimate"]]
   TaxFrame[i, "NetRichSig"] <- NetR[["p.value"]]
-  } else {
-    TaxFrame[i,"n"] <- 1
-  }
+  }}
   
 }
 TaxFrame<-na.omit(TaxFrame)
+TaxFrame <- TaxFrame[order(TaxFrame$ShannSig),]
 
+pdf(paste0(resloc,"AllOver.pdf"))
+par(mfrow = c(3,2))
+for(i in 1:length(TaxFrame[,1])){
+  ToI <- TaxFrame$Taxa[i]
+  TaxKey <- which(names(TaxList) == ToI)
+  # Shannon
+  plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"Shann"], xlab = "tAvgd Shannon", ylab = "Mean abundance", main = ToI)
+  mtext(paste0("p = ", round(TaxFrame$ShannSig[i],digits = 3)), 3, col = "Red", line = -1.5)
+  # Net Shannon
+  plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"NetShann"], xlab = "Net Shannon", ylab = "Mean abundance", main = ToI)
+  mtext(paste0("p = ", round(TaxFrame$NetShannSig[i],digits = 3)), 3, col = "Red", line = -1.5)
+  
+  # Simpson
+  plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"Simp"], xlab = "tAvgd Simpson", ylab = "Mean abundance", main = ToI)
+  mtext(paste0("p = ", round(TaxFrame$SimpSig[i],digits = 3)), 3, col = "Red", line = -1.5)
+  # Net Simpson
+  plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"NetSimp"], xlab = "Net Simpson", ylab = "Mean abundance", main = ToI)
+  mtext(paste0("p = ", round(TaxFrame$NetSimpSig[i],digits = 3)), 3, col = "Red", line = -1.5)
+  
+  # Richness
+  plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"Rich"], xlab = "tAvgd Richness", ylab = "Mean abundance", main = ToI)
+  mtext(paste0("p = ", round(TaxFrame$RichSig[i],digits = 3)), 3, col = "Red", line = -1.5)
+  # Net Richness
+  plot(y = TaxList[[TaxKey]][,"mAb"], x = TaxList[[TaxKey]][,"NetRich"], xlab = "Net Richness", ylab = "Mean abundance", main = ToI)
+  mtext(paste0("p = ", round(TaxFrame$NetRichSig[i],digits = 3)), 3, col = "Red", line = -1.5)
+}
+dev.off()
 
